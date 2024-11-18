@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "252626585550",
+    "project_id": "allergyapp-ef422",
+    "storage_bucket": "allergyapp-ef422.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:252626585550:android:388fc315887e3005e4cd9f",
+        "android_client_info": {
+          "package_name": "com.company.AllergyApp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBRJ3uKjtRre0PXaAUgavzRqgVweGnL3hM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
