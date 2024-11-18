@@ -33,7 +33,7 @@ const getBackgroundImage = (allergy) => {
     case 'gluten':
       return glutenImage;
     default:
-      return AllergyBackground; // שימוש בתמונת רקע ברירת מחדל
+      return AllergyBackground;
   }
 };
 
