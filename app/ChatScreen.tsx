@@ -43,7 +43,7 @@ const ChatScreen: React.FC = () => {
   const [message, setMessage] = useState<string>('');
   const [messages, setMessages] = useState<Array<any>>([]);
   const [loading, setLoading] = useState<boolean>(true);
-  const [refreshing, setRefreshing] = useState<boolean>(false); // סטייט לרענון
+  const [refreshing, setRefreshing] = useState<boolean>(false);
   const flatListRef = useRef<FlatList>(null);
 
   // פונקציה של רענון המידע

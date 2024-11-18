@@ -11,7 +11,7 @@ const EmergencyScreen: React.FC = () => {
     if (pressCount + 1 === 3) {
       setPressCount(0);
       Alert.alert('Emergency', 'Calling 101...');
-      Linking.openURL('tel:101'); // ביצוע שיחה ל-101
+      Linking.openURL('tel:101');
     }
   };
 
