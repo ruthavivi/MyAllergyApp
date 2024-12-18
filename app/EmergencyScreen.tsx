@@ -90,7 +90,7 @@ const AIAssistantScreen: React.FC = () => {
         <TouchableOpacity style={styles.emergencyButton} onPress={handleEmergencyPress}>
           <Text style={styles.emergencyText}>Emergency: Call 101</Text>
         </TouchableOpacity>
-        <Text style={styles.instructions}>Press the emergency button 3 times to call 101.</Text>
+        <Text style={styles.instructions}>Press the emergency button 3 times to call 101:.</Text>
       </ScrollView>
     </LinearGradient>
   );
