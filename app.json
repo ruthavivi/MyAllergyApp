@@ -4,7 +4,7 @@
     "slug": "my-new-project",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/images/icon.png",
+    "icon": "./assets/images/logo_.png",
     "scheme": "myapp",
     "userInterfaceStyle": "automatic",
     "ios": {
@@ -20,7 +20,8 @@
       },
       "permissions": [
         "CAMERA"
-      ]
+      ],
+      "package": "com.ruthla.mynewproject"
     },
     "web": {
       "bundler": "metro",
@@ -39,8 +40,15 @@
         }
       ]
     ],
-    "experiments": {
-
-    }
+    "experiments": {},
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "233a341f-3664-493a-b9f7-b6617078cb9c"
+      }
+    },
+    "owner": "ruthla"
   }
 }

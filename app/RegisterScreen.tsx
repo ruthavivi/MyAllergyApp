@@ -5,6 +5,7 @@ import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { doc, setDoc } from 'firebase/firestore';
 import { LinearGradient } from 'expo-linear-gradient'; // For gradient background
 import { auth, firestore } from './firebaseConfig'; // Import auth and firestore from firebaseConfig
+import Constants from 'expo-constants';
 
 const RegisterScreen: React.FC = () => {
   const [email, setEmail] = useState<string>('');

@@ -1,9 +1,60 @@
 import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, Alert, Linking } from 'react-native';
-import { LinearGradient } from 'expo-linear-gradient'; // Import for gradient
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert, ScrollView, Linking } from 'react-native';
+import { LinearGradient } from 'expo-linear-gradient';
+import axios from 'axios';
+import Constants from 'expo-constants'; // Import Constants from expo
 
-const EmergencyScreen: React.FC = () => {
-  const [pressCount, setPressCount] = useState(0);
+const AIAssistantScreen: React.FC = () => {
+  const [input, setInput] = useState('');
+  const [response, setResponse] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [pressCount, setPressCount] = useState(0); // Counter for the emergency button
+
+  // Accessing the API key from Constants
+  const apiKey = Constants.expoConfig.extra.HUGGINGFACE_API_KEY;
+
+  const handleAskAI = async () => {
+    if (!input.trim()) {
+      Alert.alert('Error', 'Please enter a question.');
+      return;
+    }
+
+    setLoading(true);
+    setResponse('');
+
+    try {
+      const result = await axios.post(
+        'https://api-inference.huggingface.co/models/gpt2', // Replace gpt2 with another model if needed
+        {
+          inputs: input,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${apiKey}`, // Using the API key from Constants
+            'Content-Type': 'application/json',
+          },
+        }
+      );
+
+      const aiResponse = result.data?.generated_text || 'No response generated.';
+      setResponse(aiResponse);
+    } catch (error: any) {
+      console.error('Error:', error);
+
+      if (error.response) {
+        Alert.alert(
+          'API Error',
+          `Server responded with status: ${error.response.status}\nMessage: ${error.response.data.error || 'Unknown error'}`
+        );
+      } else if (error.request) {
+        Alert.alert('Network Error', 'No response from the server. Check your internet connection.');
+      } else {
+        Alert.alert('Error', `An unexpected error occurred: ${error.message}`);
+      }
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const handleEmergencyPress = () => {
     setPressCount(pressCount + 1);
@@ -17,70 +68,36 @@ const EmergencyScreen: React.FC = () => {
 
   return (
     <LinearGradient colors={['#E3F2FD', '#BBDEFB']} style={styles.container}>
-      <View style={styles.innerContainer}>
-        <Text style={styles.title}>Emergency Alert</Text>
-        <TouchableOpacity style={styles.emergencyButton} onPress={handleEmergencyPress}>
-          <Text style={styles.emergencyText}>Call 101</Text>
+      <ScrollView contentContainerStyle={styles.innerContainer}>
+        <Text style={styles.title}>AI Assistant & Emergency</Text>
+
+        <TextInput
+          style={styles.input}
+          placeholder="Ask me anything..."
+          value={input}
+          onChangeText={setInput}
+        />
+        <TouchableOpacity style={styles.button} onPress={handleAskAI} disabled={loading}>
+          <Text style={styles.buttonText}>{loading ? 'Loading...' : 'Ask AI'}</Text>
         </TouchableOpacity>
-        <Text style={styles.instructions}>Press the button 3 times to call 101.</Text>
-      </View>
+        {response ? (
+          <View style={styles.responseContainer}>
+            <Text style={styles.responseTitle}>AI Response:</Text>
+            <Text style={styles.responseText}>{response}</Text>
+          </View>
+        ) : null}
+
+        <TouchableOpacity style={styles.emergencyButton} onPress={handleEmergencyPress}>
+          <Text style={styles.emergencyText}>Emergency: Call 101</Text>
+        </TouchableOpacity>
+        <Text style={styles.instructions}>Press the emergency button 3 times to call 101.</Text>
+      </ScrollView>
     </LinearGradient>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    padding: 20,
-  },
-  innerContainer: {
-    backgroundColor: '#ffffff',
-    borderRadius: 20,
-    padding: 30,
-    alignItems: 'center',
-    justifyContent: 'center',
-    shadowColor: '#000000',
-    shadowOpacity: 0.1,
-    shadowRadius: 10,
-    shadowOffset: { width: 0, height: 4 },
-    elevation: 5,
-  },
-  title: {
-    fontSize: 32,
-    fontWeight: 'bold',
-    color: '#333',
-    marginBottom: 20,
-    textAlign: 'center',
-    fontFamily: 'Roboto',
-  },
-  emergencyButton: {
-    backgroundColor: '#2196F3', // צבע כחול מרגיע
-    paddingVertical: 15,
-    paddingHorizontal: 40,
-    borderRadius: 30,
-    marginBottom: 20,
-    alignItems: 'center',
-    justifyContent: 'center',
-    elevation: 5,
-    shadowColor: '#2196F3',
-    shadowOffset: { width: 0, height: 6 },
-    shadowOpacity: 0.2,
-    shadowRadius: 8,
-  },
-  emergencyText: {
-    color: '#fff',
-    fontSize: 20,
-    fontWeight: 'bold',
-  },
-  instructions: {
-    fontSize: 16,
-    color: '#555',
-    textAlign: 'center',
-    marginTop: 10,
-    fontFamily: 'Roboto',
-  },
+  // Same styles as in your original code
 });
 
-export default EmergencyScreen;
+export default AIAssistantScreen;

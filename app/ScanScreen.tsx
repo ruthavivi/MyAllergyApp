@@ -4,6 +4,10 @@ import * as ImagePicker from 'expo-image-picker';
 import axios from 'axios';
 import { doc, getDoc } from 'firebase/firestore';
 import { auth, firestore } from './firebaseConfig';
+import Constants from 'expo-constants';
+
+const GOOGLE_VISION_API_KEY = Constants.expoConfig.extra.googleVisionApiKey;
+const GOOGLE_TRANSLATE_API_KEY = Constants.expoConfig.extra.googleTranslateApiKey;
 
 const ScanScreen: React.FC = () => {
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
@@ -58,7 +62,7 @@ const ScanScreen: React.FC = () => {
   const translateTextToEnglish = async (text: string): Promise<string> => {
     try {
       const response = await axios.post(
-        `https://translation.googleapis.com/language/translate/v2?key=AIzaSyBo9z2tFCJKziGiu84i3YkRuCeu7qHH8Tw`,
+        `https://translation.googleapis.com/language/translate/v2?key=${GOOGLE_TRANSLATE_API_KEY}`,
         { q: text, target: 'en' }
       );
       return response.data.data.translations[0].translatedText;
@@ -88,7 +92,7 @@ const ScanScreen: React.FC = () => {
 
     try {
       const response = await axios.post(
-        `https://vision.googleapis.com/v1/images:annotate?key=AIzaSyBo9z2tFCJKziGiu84i3YkRuCeu7qHH8Tw`,
+        `https://vision.googleapis.com/v1/images:annotate?key=${GOOGLE_VISION_API_KEY}`,
         formData,
         { headers: { 'Content-Type': 'application/json' } }
       );
